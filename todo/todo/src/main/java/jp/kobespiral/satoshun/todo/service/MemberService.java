@@ -27,6 +27,17 @@ public class MemberService {
        Member m = form.toEntity();
        return mRepo.save(m);
    }
+
+   public boolean checkMember(String mid) {
+    //IDの重複チェック
+    //String mid = form.getMid();
+    boolean judge = false;
+    if (!mRepo.existsById(mid)) {
+        judge = true;
+        //throw new ToDoAppException(ToDoAppException.MEMBER_ALREADY_EXISTS, mid + ": Member is Nothing");
+    }
+    return judge;
+}
    /**
     * メンバーを取得する (R)
     * @param mid
