@@ -31,14 +31,14 @@
             <th>ユーザID</th>
             <th>タイトル</th>
             <th>作成日時</th>
-            <th>終了日時</th>
+            <th>完了日時</th>
         </tr>
         <tr th:each="t: ${AllDones}">
             <td>[[${t.seq}]]</td>
             <td>[[${t.mid}]]</td>
             <td>[[${t.title}]]</td>
             <td>[[${t.createdAt}]]</td>
-            <td></td>
+            <td>[[${t.doneAt}]]</td>
         </tr>
 
     </table>
