@@ -83,7 +83,14 @@ public class ToDoService {
 
    public ToDo changeCondition(Long seq){
     ToDo t = getToDo(seq);
-    t.setDone(true);
+    if(t.isDone()){
+        t.setDone(false);
+        t.setDoneAt(null);
+    }
+    else{
+        t.setDone(true);
+        t.setDoneAt(new Date());
+    }
     return tRepo.save(t);
    }
 }
