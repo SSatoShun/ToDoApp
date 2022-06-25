@@ -63,6 +63,11 @@ public class ToDoController {
     return "redirect:/users/" + mid;
    }
 
+   @GetMapping("/users/{mid}/todos/{seq}/delete")
+   String deleteToDo(@ModelAttribute(name = "ToDoForm") ToDoForm form, @PathVariable String mid,@PathVariable String seq,Model model){
+    tdService.deleteToDo(Long.parseLong(seq));
+    return "redirect:/users/" + mid;
+   }
    @GetMapping("/users/{mid}/todos/{seq}")
    String change_to_condition(@ModelAttribute(name = "ToDoForm") ToDoForm form, @PathVariable String mid,@PathVariable String seq,Model model){
     tdService.changeCondition(Long.parseLong(seq));

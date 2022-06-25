@@ -27,6 +27,7 @@
             <th>タイトル</th>
             <th>作成日時</th>
             <th>コマンド</th>
+            <th>コマンド2</th>
         </tr>
     
         <tr th:each="t: ${ToDos}">
@@ -35,6 +36,9 @@
             <td>[[${t.createdAt}]]</td>
             <form role="form" th:action="@{/users/__${t.mid}__/todos/__${t.seq}__}"  method="get">
                 <td><p><input type="submit" value="Done"/></p></td>
+            </form>
+            <form role="form" th:action="@{/users/__${t.mid}__/todos/__${t.seq}__/delete}"  method="get">
+                <td><p><input type="submit" value="Delete"/></p></td>
             </form>
         </tr>
     </table>
