@@ -7,9 +7,9 @@
 </head>
 
 <body>
-    <h1> みんなのToDoリスト</h1>
+    <h1> ようこそ [[${member.name}]] さん！</h1>
     <p>
-        <a th:href="@{/{mid}/todos(mid=${member.mid})}">自分のToDo</a>
+        <a th:href="@{/{mid}/todos/all(mid=${member.mid})}">みんなのToDo</a>
         <form th:action="@{/sign_out}" method="post">
             <input type="submit" value="サインアウト" />
         </form>
@@ -19,14 +19,28 @@
         <tr>
             <th>#</th>
             <th>タイトル</th>
-            <th>作成者</th>
             <th>作成日時</th>
+            <th>コマンド</th>
         </tr>
         <tr th:each="todo: ${todos}">
             <td>[[${todo.seq}]]</td>
             <td>[[${todo.title}]]</td>
-            <td>[[${todo.mid}]]</td>
             <td>[[${todo.createdAt}]]</td>
+            <td>
+                <a th:href="@{/{mid}/todos/{seq}/done(mid=${member.mid},seq=${todo.seq})}">完了</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                *
+            </td>
+            <td colspan="3">
+                <form role="form" th:action="@{/{mid}/todos(mid=${member.mid})}" th:object="${ToDoForm}" method="post">
+                    <input type="text" required th:field="*{title}" />
+                    <input type="submit" value="新規作成" />
+                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red"></div>
+                </form>
+            </td>
         </tr>
     </table>
 
@@ -35,13 +49,13 @@
         <tr>
             <th>#</th>
             <th>タイトル</th>
-            <th>作成者</th>
+            <th>作成日時</th>
             <th>完了日時</th>
         </tr>
         <tr th:each="done: ${dones}">
             <td>[[${done.seq}]]</td>
             <td>[[${done.title}]]</td>
-            <td>[[${done.mid}]]</td>
+            <td>[[${done.createdAt}]]</td>
             <td>[[${done.doneAt}]]</td>
         </tr>
     </table>

@@ -2,17 +2,24 @@ package jp.kobespiral.satoshun.todo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service; 
 
 import jp.kobespiral.satoshun.todo.dto.MemberForm;
+import jp.kobespiral.satoshun.todo.dto.UserDetailsImpl;
 import jp.kobespiral.satoshun.todo.entity.Member;
 import jp.kobespiral.satoshun.todo.exception.ToDoAppException;
 import jp.kobespiral.satoshun.todo.repository.MemberRepository;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService{
     @Autowired
    MemberRepository mRepo;
+   @Autowired
+   BCryptPasswordEncoder encoder;
    /**
     * メンバーを作成する (C)
     * @param form
@@ -25,6 +32,7 @@ public class MemberService {
            throw new ToDoAppException(ToDoAppException.MEMBER_ALREADY_EXISTS, mid + ": Member already exists");
        }
        Member m = form.toEntity();
+       m.setPassword(encoder.encode(m.getPassword())); //エンコードしてセーブする
        return mRepo.save(m);
    }
 
@@ -62,4 +70,29 @@ public class MemberService {
        Member m = getMember(mid);
        mRepo.delete(m);
    }
+
+   /* ------------------ ここから追加分  ---------------------------*/
+    /**
+     * Spring Securityのメソッド．ユーザIDを与えて，ユーザ詳細を生成する
+     */
+    @Override
+    public UserDetails loadUserByUsername(String mid) throws UsernameNotFoundException {
+        Member m = mRepo.findById(mid).orElseThrow(
+            () -> new UsernameNotFoundException(mid + ": no such user exists")
+        );
+        return new UserDetailsImpl(m);
+    }
+
+    /**
+     * 管理者を登録するサービス．
+     */
+    public Member registerAdmin(String adminPassword) {
+        Member m = new Member();
+        m.setMid("admin");
+        m.setName("System Administrator");
+        m.setPassword(encoder.encode(adminPassword));
+        m.setRole("ADMIN");
+        return mRepo.save(m);
+    }
 }
+
