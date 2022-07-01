@@ -16,6 +16,7 @@ import jp.kobespiral.satoshun.todo.dto.MemberForm;
 import jp.kobespiral.satoshun.todo.dto.MidForm;
 import jp.kobespiral.satoshun.todo.dto.ToDoForm;
 import jp.kobespiral.satoshun.todo.entity.ToDo;
+import jp.kobespiral.satoshun.todo.exception.ToDoAppException;
 import jp.kobespiral.satoshun.todo.service.MemberService;
 import jp.kobespiral.satoshun.todo.service.ToDoService;
 
@@ -52,7 +53,7 @@ public class ToDoController {
             return showLoginForm(form, form.getMid(),model);
         }
         boolean judge = mService.checkMember(form.getMid());
-        if(judge){return "redirect:/";}
+        if(judge){throw new ToDoAppException(ToDoAppException.NO_SUCH_MEMBER_EXISTS, "Such member is not exist! : " + form.getMid());}
        return "redirect:/users/"+form.getMid();
        
    }

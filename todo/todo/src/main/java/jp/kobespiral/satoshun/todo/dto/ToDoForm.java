@@ -8,7 +8,7 @@ import jp.kobespiral.satoshun.todo.entity.ToDo;
 @Data
 public class ToDoForm {
     @NotBlank
-    @Pattern(regexp = "[a-z0-9_\\-]{3,64}")
+    @Pattern(regexp = ".*{1,64}")
     String title;
 
     // public ToDo toEntity(){
