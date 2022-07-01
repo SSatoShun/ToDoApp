@@ -16,7 +16,9 @@
     <form role="form" th:action="@{/users/__${mid}__/todos}" th:object="${ToDoForm}" method="post">
         <tr>
             <td><label>タイトル: </label></td>
-            <td><input type="text" required th:name="title" /></td>
+            <td><input type="text" required th:name="title" />
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red"></span>
+            </td>
         </tr>
         <p><input type="submit" value="登録する" /></p>
     </form>

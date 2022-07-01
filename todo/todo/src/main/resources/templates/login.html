@@ -12,11 +12,13 @@
     <ul>
         <li>存在するユーザIDのみ受け付けます</li>
     </ul>
-    <form role="form" th:action="@{/login}" th:object="${MemberForm}" method="get">
+    <form role="form" th:action="@{/login}" th:object="${MidForm}" method="get">
         <table>
             <tr>
                 <td><label>メンバーID: </label></td>
-                <td><input type="text" required th:name="mid" /></td>
+                <td><input type="text" required th:name="mid" />
+                    <span th:if="${#fields.hasErrors('mid')}" th:errors="*{mid}" style="color: red"></span>
+                </td>
             </tr>
         </table>
         <p><input type="submit" value="Login" /></p>
