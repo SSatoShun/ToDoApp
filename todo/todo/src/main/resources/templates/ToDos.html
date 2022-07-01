@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo画面</title>
+</head>
+<body>
+    <h1>ToDo画面</h1>
+    <form role="form" th:action="@{/users/todos}" th:object="${AllList}" method="get">
+        <h2>みんなのToDoリストを見に行く</h2>
+        <p><input type="submit" value="Go" /></p>
+    </form>
+    <h2>登録フォーム</h2>
+    <form role="form" th:action="@{/users/__${mid}__/todos}" th:object="${ToDoForm}" method="post">
+        <tr>
+            <td><label>タイトル: </label></td>
+            <td><input type="text" required th:name="title" /></td>
+        </tr>
+        <p><input type="submit" value="登録する" /></p>
+    </form>
+    <h2>ToDoリスト</h2>
+    <table border="1">
+        <tr>
+            <th>番号</th>
+            <th>タイトル</th>
+            <th>作成日時</th>
+            <th>コマンド</th>
+            <th>コマンド2</th>
+        </tr>
+    
+        <tr th:each="t: ${ToDos}">
+            <td>[[${t.seq}]]</td>
+            <td>[[${t.title}]]</td>
+            <td>[[${t.createdAt}]]</td>
+            <form role="form" th:action="@{/users/__${t.mid}__/todos/__${t.seq}__}"  method="get">
+                <td><p><input type="submit" value="Done"/></p></td>
+            </form>
+            <form role="form" th:action="@{/users/__${t.mid}__/todos/__${t.seq}__/delete}"  method="get">
+                <td><p><input type="submit" value="Delete"/></p></td>
+            </form>
+        </tr>
+    </table>
+    <h2>Doneリスト</h2>
+    <table border="1">
+        <tr>
+            <th>番号</th>
+            <th>タイトル</th>
+            <th>作成日時</th>
+            <th>完了日時</th>
+            <th>コマンド</th>
+        </tr>
+        <tr th:each="t: ${Dones}">
+            <td>[[${t.seq}]]</td>
+            <td>[[${t.title}]]</td>
+            <td>[[${t.createdAt}]]</td>
+            <td>[[${t.doneAt}]]</td>
+            <form role="form" th:action="@{/users/__${t.mid}__/todos/__${t.seq}__}"  method="get">
+                <td><p><input type="submit" value="Reopen"/></p></td>
+            </form>
+        </tr>
+
+    </table>
+    <form role="form" th:action="@{/}"  method="get">
+        <td><p><input type="submit" value="ログイン画面へ戻る"/></p></td>
+    </form>
+</body>
+</html>
